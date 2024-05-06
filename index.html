@@ -6,22 +6,34 @@
     <title>Series de TV</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
         <h1>Listado de Series de TV</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Canal</th>
-                    <th>Temporadas</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Canal</th>
+                            <th>Temporadas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="seriesList">
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6" id="serieDetail">
+                <!-- Detalle de la serie se mostrará aquí -->
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap JS -->
@@ -29,13 +41,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Script TypeScript -->
-    <script type="module" src="series.js"></script>
-    <script type="module" src="data.js"></script>
+    <!-- Script -->
+    <script src="series.js" type="module"></script>
+    <script src="data.js" type="module"></script>
     <script>
+        const tbody = document.getElementById('seriesList');
+        const serieDetail = document.getElementById('serieDetail');
+
         // Llenar la tabla con los datos de las series
-        const tbody = document.querySelector('tbody');
-        seriesData.forEach(serie => {
+        series.forEach(serie => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${serie.id}</td>
@@ -44,7 +58,26 @@
                 <td>${serie.seasons}</td>
             `;
             tbody.appendChild(row);
+
+            // Agregar evento de clic a cada fila para mostrar el detalle de la serie
+            row.addEventListener('click', () => {
+                mostrarDetalleSerie(serie);
+            });
         });
+
+        // Función para mostrar el detalle de la serie seleccionada
+        function mostrarDetalleSerie(serie) {
+            serieDetail.innerHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${serie.name}</h5>
+                        <p class="card-text">ID: ${serie.id}</p>
+                        <p class="card-text">Canal: ${serie.channel}</p>
+                        <p class="card-text">Temporadas: ${serie.seasons}</p>
+                    </div>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>
